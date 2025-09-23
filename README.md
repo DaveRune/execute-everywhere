@@ -16,7 +16,7 @@ This was created due to the need to add and configure a new component to all tex
 
 ## Create an Action
 - Create a new C# script inside a folder called 'Editor'
-- Derive from ExecutionAction
+- Derive from ExecutionAction or ExecutionActionOnComponent
 - Add a CreateAssetMenu attribute
 - Override one of the following methods:
   - ExecuteActionOnComponent(MonoBehaviour component)
@@ -27,7 +27,3 @@ This was created due to the need to add and configure a new component to all tex
 
 ## Planned Future Features
  - Run on all assets of a certain type
-
-## License
-MIT License  
-Copyright © 2025 Knight Forge
