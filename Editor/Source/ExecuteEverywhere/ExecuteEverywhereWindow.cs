@@ -15,8 +15,9 @@ namespace KnightForge.Editor.ExecuteEverywhere
         private Type _targetType;
         private bool _includeDerivedTypes = true;
 
-        private bool _includeScenes = true;
         private bool _includePrefabs = true;
+        private bool _includeScenes = true;
+        private bool _buildScenesOnly = true;
         private bool _ignorePlugins = true;
 
         [SerializeField]
@@ -77,7 +78,10 @@ namespace KnightForge.Editor.ExecuteEverywhere
 
             _includePrefabs = EditorGUILayout.Toggle("Search in Prefabs", _includePrefabs);
             _includeScenes = EditorGUILayout.Toggle("Search in Scenes", _includeScenes);
-            _ignorePlugins = EditorGUILayout.Toggle("Ignore Plugins/ folders", _includeScenes);
+            EditorGUI.BeginDisabledGroup(!_includeScenes);
+            _buildScenesOnly = EditorGUILayout.Toggle("Build Scenes Only", _buildScenesOnly);
+            EditorGUI.EndDisabledGroup();
+            _ignorePlugins = EditorGUILayout.Toggle("Ignore Plugins/ folders", _ignorePlugins);
             GUILayout.Width(EditorGUIUtility.currentViewWidth - 20);
             EditorGUIUtility.labelWidth = originalLabelWidth;
 
@@ -190,12 +194,23 @@ namespace KnightForge.Editor.ExecuteEverywhere
             _scenes.Clear();
             _scenePaths.Clear();
 
-            var sceneGuids = AssetDatabase.FindAssets("t:Scene");
+            string[] scenePaths;
 
-            foreach (var guid in sceneGuids)
+            if (_buildScenesOnly)
             {
-                var scenePath = AssetDatabase.GUIDToAssetPath(guid);
+                scenePaths = EditorBuildSettings.scenes
+                    .Where(scene => scene.enabled)
+                    .Select(scene => scene.path)
+                    .ToArray();
+            }
+            else
+            {
+                var sceneGuids = AssetDatabase.FindAssets("t:Scene");
+                scenePaths = sceneGuids.Select(AssetDatabase.GUIDToAssetPath).ToArray();
+            }
 
+            foreach (var scenePath in scenePaths)
+            {
                 if (!AssetDatabase.IsOpenForEdit(scenePath))
                     continue;
 
