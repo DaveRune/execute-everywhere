@@ -1,0 +1,22 @@
+{
+  "name": "com.knightforge.execute-everywhere",
+  "version": "1.0.0",
+  "displayName": "Execute Everywhere",
+  "description": "Perform your custom action in all prefabs and or scenes in a Unity project",
+  "unity": "2022.3",
+  "unityRelease": "0f1",
+  "keywords": [
+    "unity",
+	"unity3d",
+	"upm",
+    "knightforge",
+    "utility",
+	"execute",
+	"everywhere"
+  ],
+  "author": {
+    "name": "Knight Forge",
+    "email": "dave@knightforge.co.uk",
+    "url": "https://www.knightforge.co.uk"
+  }
+}
