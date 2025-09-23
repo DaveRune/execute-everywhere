@@ -1,6 +1,6 @@
 {
   "name": "com.knightforge.execute-everywhere",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "Execute Everywhere",
   "description": "Perform your custom action in all prefabs and or scenes in a Unity project",
   "unity": "2022.3",
