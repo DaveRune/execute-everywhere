@@ -241,9 +241,9 @@ namespace KnightForge.Editor.ExecuteEverywhere
                     _scenes.Add(sceneAsset);
                     _scenePaths[sceneAsset] = scenePath;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Ignored
+                    Debug.LogWarning($"Failed to search scene '{scenePath}': {ex.Message}. Continuing with next scene.");
                 }
             }
         }
@@ -281,19 +281,26 @@ namespace KnightForge.Editor.ExecuteEverywhere
                 
                 foreach (var sceneAsset in _scenes)
                 {
-                    var scenePath = _scenePaths[sceneAsset];
-                    var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+                    try
+                    {
+                        var scenePath = _scenePaths[sceneAsset];
+                        var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
 
-                    var allComponents = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-                    var components = allComponents
-                        .Where(component => component && _targetType
-                            .IsAssignableFrom(component.GetType()))
-                        .ToArray();
+                        var allComponents = FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                        var components = allComponents
+                            .Where(component => component && _targetType
+                                .IsAssignableFrom(component.GetType()))
+                            .ToArray();
 
-                    foreach (var component in components)
-                        action.Execute(component);
+                        foreach (var component in components)
+                            action.Execute(component);
 
-                    EditorSceneManager.SaveScene(scene);
+                        EditorSceneManager.SaveScene(scene);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"Failed to execute actions on scene '{sceneAsset.name}': {ex.Message}. Continuing with next scene.");
+                    }
                 }
             }
 
