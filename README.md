@@ -21,9 +21,8 @@ This was created due to the need to add and configure a new component to all tex
 - Override one of the following methods:
   - ExecuteActionOnComponent(MonoBehaviour component)
   - ExecuteActionOnContainingPrefab(GameObject prefab)
-- Write your action in C#
-- Save
-- Right-click in your 'Editor' folder 
+- Write your action in C# and save
+- Right-click in your project window and create your action
 
 ## Planned Future Features
  - Run on all assets of a certain type
